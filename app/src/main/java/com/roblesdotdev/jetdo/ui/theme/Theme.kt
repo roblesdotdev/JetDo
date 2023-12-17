@@ -1,3 +1,5 @@
+@file:Suppress("FunctionNaming")
+
 package com.roblesdotdev.jetdo.ui.theme
 
 import android.app.Activity
