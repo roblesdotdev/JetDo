@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.roblesdotdev.jetdo.ui.theme
+package com.roblesdotdev.jetdo.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
