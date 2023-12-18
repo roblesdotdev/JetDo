@@ -5,3 +5,5 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.23.4"
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
 }
+
+apply(from = "buildScripts/git-hooks.gradle")
