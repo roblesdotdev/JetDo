@@ -31,7 +31,11 @@ import com.roblesdotdev.jetdo.core.ui.theme.JetDoTheme
 
 @Composable
 fun LoginContent(
-    state: LoginViewState
+    state: LoginViewState,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onLoginClicked: () -> Unit,
+    onSignUpClicked: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -50,38 +54,25 @@ fun LoginContent(
         ) {
             Spacer(modifier = Modifier.weight(1f))
 
-            AppTextField(
+            EmailField(
                 text = state.email,
-                onTextChanged = {},
-                labelText = "Email",
-                placeholderText = "Enter your email",
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next
-                )
+                onTextChanged = onEmailChanged
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            AppTextField(
+            PasswordField(
                 text = state.password,
-                onTextChanged = {},
-                labelText = "Password",
-                placeholderText = "Enter your password",
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
-                ),
-                visualTransformation = PasswordVisualTransformation()
+                onTextChanged = onPasswordChanged
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(48.dp))
 
-            PrimaryButton(text = "login", onClick = { /*TODO*/ })
+            LoginButton(onClick = onLoginClicked)
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            SecondaryButton(text = "sign up", onClick = { /*TODO*/ })
+            SignUpButton(onClick = onSignUpClicked)
 
             Spacer(modifier = Modifier.height(12.dp))
         }
@@ -95,6 +86,51 @@ fun LoginContent(
     }
 }
 
+@Composable
+private fun SignUpButton(onClick: () -> Unit) {
+    SecondaryButton(text = "sign up", onClick = onClick)
+}
+
+@Composable
+private fun LoginButton(onClick: () -> Unit) {
+    PrimaryButton(text = "login", onClick = onClick)
+}
+
+@Composable
+private fun PasswordField(
+    text: String,
+    onTextChanged: (String) -> Unit
+) {
+    AppTextField(
+        text = text,
+        onTextChanged = onTextChanged,
+        labelText = "Password",
+        placeholderText = "Enter your password",
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
+        ),
+        visualTransformation = PasswordVisualTransformation()
+    )
+}
+
+@Composable
+private fun EmailField(
+    text: String,
+    onTextChanged: (String) -> Unit
+) {
+    AppTextField(
+        text = text,
+        onTextChanged = onTextChanged,
+        labelText = "Email",
+        placeholderText = "Enter your email",
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
+        )
+    )
+}
+
 @Preview(
     name = "Night mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES
@@ -106,6 +142,12 @@ fun LoginContent(
 @Composable
 fun LoginContentPreview() {
     JetDoTheme {
-        LoginContent(state = LoginViewState(isSubmitting = true))
+        LoginContent(
+            state = LoginViewState(),
+            onEmailChanged = {},
+            onPasswordChanged = {},
+            onLoginClicked = {},
+            onSignUpClicked = {}
+        )
     }
 }
