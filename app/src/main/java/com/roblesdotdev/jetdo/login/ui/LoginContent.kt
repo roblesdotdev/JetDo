@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +43,7 @@ fun LoginContent(
     onLoginClicked: () -> Unit,
     onSignUpClicked: () -> Unit
 ) {
+    val isSubmitting = state is LoginViewState.Submitting
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -61,27 +63,45 @@ fun LoginContent(
 
             EmailField(
                 text = state.credentials.email.value,
-                onTextChanged = onEmailChanged
+                onTextChanged = onEmailChanged,
+                errorMessage = (state as? LoginViewState.Active)?.emailInputErrorMessage,
+                enabled = !isSubmitting
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             PasswordField(
                 text = state.credentials.password.value,
-                onTextChanged = onPasswordChanged
+                onTextChanged = onPasswordChanged,
+                errorMessage = (state as? LoginViewState.Active)?.passwordInputErrorMessage,
+                enabled = !isSubmitting
             )
+
+            if (state is LoginViewState.SubmissionError) {
+                Text(
+                    text = state.errorMessage,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(top = 12.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            LoginButton(onClick = onLoginClicked)
+            LoginButton(
+                onClick = onLoginClicked,
+                enabled = !isSubmitting
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            SignUpButton(onClick = onSignUpClicked)
+            SignUpButton(
+                onClick = onSignUpClicked,
+                enabled = !isSubmitting
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
         }
-        if (!state.inputsEnabled) {
+        if (isSubmitting) {
             CircularProgressIndicator(
                 modifier = Modifier
                     .wrapContentSize()
@@ -92,19 +112,35 @@ fun LoginContent(
 }
 
 @Composable
-private fun SignUpButton(onClick: () -> Unit) {
-    SecondaryButton(text = "sign up", onClick = onClick)
+private fun SignUpButton(
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    SecondaryButton(
+        text = "sign up",
+        onClick = onClick,
+        enabled = enabled
+    )
 }
 
 @Composable
-private fun LoginButton(onClick: () -> Unit) {
-    PrimaryButton(text = "login", onClick = onClick)
+private fun LoginButton(
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    PrimaryButton(
+        text = "login",
+        onClick = onClick,
+        enabled = enabled
+    )
 }
 
 @Composable
 private fun PasswordField(
     text: String,
-    onTextChanged: (String) -> Unit
+    onTextChanged: (String) -> Unit,
+    errorMessage: String?,
+    enabled: Boolean
 ) {
     AppTextField(
         text = text,
@@ -115,14 +151,18 @@ private fun PasswordField(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Done
         ),
-        visualTransformation = PasswordVisualTransformation()
+        visualTransformation = PasswordVisualTransformation(),
+        errorMessage = errorMessage,
+        enabled = enabled
     )
 }
 
 @Composable
 private fun EmailField(
     text: String,
-    onTextChanged: (String) -> Unit
+    onTextChanged: (String) -> Unit,
+    enabled: Boolean,
+    errorMessage: String?
 ) {
     AppTextField(
         text = text,
@@ -132,7 +172,9 @@ private fun EmailField(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
-        )
+        ),
+        errorMessage = errorMessage,
+        enabled = enabled
     )
 }
 
@@ -165,16 +207,21 @@ class LoginViewStateProvider : PreviewParameterProvider<LoginViewState> {
         get() {
             val activeCredentials = Credentials(
                 email = Email(value = "test@email.com"),
-                password = Password(value = "testpassword")
+                password = Password(value = "testPassword")
             )
 
             return sequenceOf(
                 LoginViewState.Initial,
                 LoginViewState.Active(activeCredentials),
+                LoginViewState.Active(
+                    Credentials(),
+                    emailInputErrorMessage = "Please enter an email.",
+                    passwordInputErrorMessage = "Please enter a password."
+                ),
                 LoginViewState.Submitting(activeCredentials),
                 LoginViewState.SubmissionError(
                     credentials = activeCredentials,
-                    errorMessage = "Something went wrong"
+                    errorMessage = "Something went wrong. Please try again."
                 ),
                 LoginViewState.Completed
             )
