@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun LoginScreen() {
-    val state = LoginViewState()
+    val state = LoginViewState.Initial
     LoginContent(
         state = state,
         onEmailChanged = {},

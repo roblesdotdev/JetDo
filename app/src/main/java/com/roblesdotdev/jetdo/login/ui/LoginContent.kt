@@ -22,12 +22,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.roblesdotdev.jetdo.R
 import com.roblesdotdev.jetdo.core.ui.components.AppTextField
 import com.roblesdotdev.jetdo.core.ui.components.PrimaryButton
 import com.roblesdotdev.jetdo.core.ui.components.SecondaryButton
 import com.roblesdotdev.jetdo.core.ui.theme.JetDoTheme
+import com.roblesdotdev.jetdo.login.domain.model.Credentials
+import com.roblesdotdev.jetdo.login.domain.model.Email
+import com.roblesdotdev.jetdo.login.domain.model.Password
 
 @Composable
 fun LoginContent(
@@ -55,14 +60,14 @@ fun LoginContent(
             Spacer(modifier = Modifier.weight(1f))
 
             EmailField(
-                text = state.email,
+                text = state.credentials.email.value,
                 onTextChanged = onEmailChanged
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             PasswordField(
-                text = state.password,
+                text = state.credentials.password.value,
                 onTextChanged = onPasswordChanged
             )
 
@@ -76,7 +81,7 @@ fun LoginContent(
 
             Spacer(modifier = Modifier.height(12.dp))
         }
-        if (state.isSubmitting) {
+        if (!state.inputsEnabled) {
             CircularProgressIndicator(
                 modifier = Modifier
                     .wrapContentSize()
@@ -140,14 +145,38 @@ private fun EmailField(
     uiMode = Configuration.UI_MODE_NIGHT_NO
 )
 @Composable
-fun LoginContentPreview() {
+fun LoginContentPreview(
+    @PreviewParameter(provider = LoginViewStateProvider::class)
+    loginViewState: LoginViewState
+) {
     JetDoTheme {
         LoginContent(
-            state = LoginViewState(),
+            state = loginViewState,
             onEmailChanged = {},
             onPasswordChanged = {},
             onLoginClicked = {},
             onSignUpClicked = {}
         )
     }
+}
+
+class LoginViewStateProvider : PreviewParameterProvider<LoginViewState> {
+    override val values: Sequence<LoginViewState>
+        get() {
+            val activeCredentials = Credentials(
+                email = Email(value = "test@email.com"),
+                password = Password(value = "testpassword")
+            )
+
+            return sequenceOf(
+                LoginViewState.Initial,
+                LoginViewState.Active(activeCredentials),
+                LoginViewState.Submitting(activeCredentials),
+                LoginViewState.SubmissionError(
+                    credentials = activeCredentials,
+                    errorMessage = "Something went wrong"
+                ),
+                LoginViewState.Completed
+            )
+        }
 }
