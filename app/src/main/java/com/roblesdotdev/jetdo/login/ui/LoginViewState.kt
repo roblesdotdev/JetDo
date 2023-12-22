@@ -1,5 +1,6 @@
 package com.roblesdotdev.jetdo.login.ui
 
+import com.roblesdotdev.jetdo.core.utils.UIText
 import com.roblesdotdev.jetdo.login.domain.model.Credentials
 
 /*
@@ -24,8 +25,8 @@ sealed class LoginViewState(
      */
     data class Active(
         override val credentials: Credentials,
-        val emailInputErrorMessage: String? = null,
-        val passwordInputErrorMessage: String? = null
+        val emailInputErrorMessage: UIText? = null,
+        val passwordInputErrorMessage: UIText? = null
     ) : LoginViewState(
         credentials = credentials
     )
@@ -45,7 +46,7 @@ sealed class LoginViewState(
      */
     data class SubmissionError(
         override val credentials: Credentials,
-        val errorMessage: String
+        val errorMessage: UIText
     ) : LoginViewState(
         credentials = credentials
     )

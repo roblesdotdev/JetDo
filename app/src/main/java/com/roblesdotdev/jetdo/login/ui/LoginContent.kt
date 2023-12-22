@@ -31,6 +31,8 @@ import com.roblesdotdev.jetdo.core.ui.components.AppTextField
 import com.roblesdotdev.jetdo.core.ui.components.PrimaryButton
 import com.roblesdotdev.jetdo.core.ui.components.SecondaryButton
 import com.roblesdotdev.jetdo.core.ui.theme.JetDoTheme
+import com.roblesdotdev.jetdo.core.utils.UIText
+import com.roblesdotdev.jetdo.core.utils.getString
 import com.roblesdotdev.jetdo.login.domain.model.Credentials
 import com.roblesdotdev.jetdo.login.domain.model.Email
 import com.roblesdotdev.jetdo.login.domain.model.Password
@@ -64,7 +66,7 @@ fun LoginContent(
             EmailField(
                 text = state.credentials.email.value,
                 onTextChanged = onEmailChanged,
-                errorMessage = (state as? LoginViewState.Active)?.emailInputErrorMessage,
+                errorMessage = (state as? LoginViewState.Active)?.emailInputErrorMessage?.getString(),
                 enabled = !isSubmitting
             )
 
@@ -73,13 +75,13 @@ fun LoginContent(
             PasswordField(
                 text = state.credentials.password.value,
                 onTextChanged = onPasswordChanged,
-                errorMessage = (state as? LoginViewState.Active)?.passwordInputErrorMessage,
+                errorMessage = (state as? LoginViewState.Active)?.passwordInputErrorMessage?.getString(),
                 enabled = !isSubmitting
             )
 
             if (state is LoginViewState.SubmissionError) {
                 Text(
-                    text = state.errorMessage,
+                    text = state.errorMessage.getString(),
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(top = 12.dp)
                 )
@@ -215,13 +217,13 @@ class LoginViewStateProvider : PreviewParameterProvider<LoginViewState> {
                 LoginViewState.Active(activeCredentials),
                 LoginViewState.Active(
                     Credentials(),
-                    emailInputErrorMessage = "Please enter an email.",
-                    passwordInputErrorMessage = "Please enter a password."
+                    emailInputErrorMessage = UIText.ResourceText(R.string.error_empty_email),
+                    passwordInputErrorMessage = UIText.ResourceText(R.string.error_empty_password)
                 ),
                 LoginViewState.Submitting(activeCredentials),
                 LoginViewState.SubmissionError(
                     credentials = activeCredentials,
-                    errorMessage = "Something went wrong. Please try again."
+                    errorMessage = UIText.ResourceText(R.string.error_login_failure)
                 ),
                 LoginViewState.Completed
             )

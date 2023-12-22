@@ -1,46 +1,21 @@
 package com.roblesdotdev.jetdo.login.domain.usecase
 
 import com.roblesdotdev.jetdo.login.domain.model.Credentials
-import com.roblesdotdev.jetdo.login.domain.model.InvalidCredentialsException
 import com.roblesdotdev.jetdo.login.domain.model.LoginResult
-import com.roblesdotdev.jetdo.login.domain.repository.LoginRepository
-import com.roblesdotdev.jetdo.login.domain.repository.TokenRepository
+import kotlinx.coroutines.delay
 
-class CredentialsLoginUseCase(
-    private val loginRepository: LoginRepository,
-    private val tokenRepository: TokenRepository
-) {
+class CredentialsLoginUseCase {
 
     suspend fun login(credentials: Credentials): LoginResult {
+        @Suppress("MagicNumber")
+        delay(2000)
         val validationResult = validateCredentials(credentials)
 
         if (validationResult != null) {
             return validationResult
         }
 
-        val repoResult = loginRepository.login(credentials)
-
-        return repoResult.fold(
-            onSuccess = { loginResponse ->
-                tokenRepository.storeToken(loginResponse.token)
-                LoginResult.Success
-            },
-            onFailure = { error ->
-                loginResultForError(error)
-            }
-        )
-    }
-
-    private fun loginResultForError(error: Throwable): LoginResult.Failure {
-        return when (error) {
-            is InvalidCredentialsException -> {
-                LoginResult.Failure.InvalidCredentials
-            }
-
-            else -> {
-                LoginResult.Failure.Unknown
-            }
-        }
+        return LoginResult.Success
     }
 
     private fun validateCredentials(credentials: Credentials): LoginResult.Failure.EmptyCredentials? {

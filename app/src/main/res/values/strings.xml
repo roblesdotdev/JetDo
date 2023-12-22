@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">JetDo</string>
+    <string name="error_invalid_credentials">Invalid credentials.</string>
+    <string name="error_empty_email">Please enter your email</string>
+    <string name="error_empty_password">Please enter your password.</string>
+    <string name="error_login_failure">Something went wrong. Try again.</string>
 </resources>
