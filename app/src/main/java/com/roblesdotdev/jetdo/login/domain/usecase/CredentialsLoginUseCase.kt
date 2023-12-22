@@ -15,7 +15,7 @@ class CredentialsLoginUseCase {
             return validationResult
         }
 
-        return LoginResult.Failure.Unknown
+        return LoginResult.Failure.InvalidCredentials
     }
 
     private fun validateCredentials(credentials: Credentials): LoginResult.Failure.EmptyCredentials? {

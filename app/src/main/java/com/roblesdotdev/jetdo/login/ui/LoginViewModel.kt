@@ -66,6 +66,13 @@ class LoginViewModel(
                 LoginViewState.Completed
             }
 
+            LoginResult.Failure.InvalidCredentials -> {
+                LoginViewState.SubmissionError(
+                    credentials = currentCredentials,
+                    errorMessage = UIText.ResourceText(R.string.error_invalid_credentials)
+                )
+            }
+
             else -> _viewState.value
         }
     }
