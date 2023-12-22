@@ -32,7 +32,9 @@ fun AppTextField(
     enabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     focusRequester: FocusRequester = FocusRequester(),
-    errorMessage: String? = null
+    errorMessage: String? = null,
+    singleLine: Boolean = true,
+    maxLines: Int = 1
 ) {
     val labelComposable: (@Composable () -> Unit)? = labelText?.let {
         @Composable {
@@ -57,7 +59,9 @@ fun AppTextField(
             visualTransformation = visualTransformation,
             enabled = enabled,
             keyboardOptions = keyboardOptions,
-            isError = (errorMessage != null)
+            isError = (errorMessage != null),
+            singleLine = singleLine,
+            maxLines = maxLines
         )
 
         if (errorMessage != null) {
