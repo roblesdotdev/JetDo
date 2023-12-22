@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("io.gitlab.arturbosch.detekt")
     id("org.jlleitschuh.gradle.ktlint")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -71,4 +73,7 @@ dependencies {
 
     // ViewModel tools
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    // Dependency Injection
+    implementation("com.google.dagger:hilt-android:2.46")
+    kapt("com.google.dagger:hilt-android-compiler:2.46")
 }
