@@ -71,9 +71,10 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    // ViewModel tools
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-    // Dependency Injection
-    implementation("com.google.dagger:hilt-android:2.46")
-    kapt("com.google.dagger:hilt-android-compiler:2.46")
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+
+    // Hilt ViewModel
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 }

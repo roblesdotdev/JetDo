@@ -9,12 +9,15 @@ import com.roblesdotdev.jetdo.login.domain.model.Email
 import com.roblesdotdev.jetdo.login.domain.model.LoginResult
 import com.roblesdotdev.jetdo.login.domain.model.Password
 import com.roblesdotdev.jetdo.login.domain.usecase.CredentialsLoginUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(
-    private val credentialsLoginUseCase: CredentialsLoginUseCase = CredentialsLoginUseCase()
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val credentialsLoginUseCase: CredentialsLoginUseCase
 ) : ViewModel() {
     private val _viewState: MutableStateFlow<LoginViewState> =
         MutableStateFlow(LoginViewState.Initial)
@@ -72,8 +75,6 @@ class LoginViewModel(
                     errorMessage = UIText.ResourceText(R.string.error_invalid_credentials)
                 )
             }
-
-            else -> _viewState.value
         }
     }
 }
