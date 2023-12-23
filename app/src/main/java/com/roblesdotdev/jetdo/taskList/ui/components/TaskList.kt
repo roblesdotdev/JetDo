@@ -17,7 +17,7 @@ fun TaskList(
     tasks: List<Task>,
     onRescheduleClicked: (Task) -> Unit,
     onDoneClicked: (Task) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
