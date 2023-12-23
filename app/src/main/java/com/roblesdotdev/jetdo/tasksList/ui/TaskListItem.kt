@@ -24,7 +24,7 @@ import com.roblesdotdev.jetdo.tasksList.domain.model.Task
 fun TaskListItem(
     task: Task,
     onRescheduleClicked: (Task) -> Unit,
-    onDoneClicked: (Task) -> Unit,
+    onDoneClicked: (Task) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -42,7 +42,7 @@ fun TaskListItem(
 
             RowButtons(
                 onRescheduleClicked = { onRescheduleClicked(task) },
-                onDoneClicked = { onDoneClicked(task) },
+                onDoneClicked = { onDoneClicked(task) }
             )
         }
     }
