@@ -4,4 +4,6 @@
     <string name="error_empty_email">Please enter your email</string>
     <string name="error_empty_password">Please enter your password.</string>
     <string name="error_login_failure">Something went wrong. Try again.</string>
+    <string name="reschedule">reschedule</string>
+    <string name="done">done</string>
 </resources>

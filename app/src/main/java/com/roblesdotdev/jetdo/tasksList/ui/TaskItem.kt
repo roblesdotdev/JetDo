@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.roblesdotdev.jetdo.R
+import com.roblesdotdev.jetdo.core.ui.components.AppTextButton
 import com.roblesdotdev.jetdo.core.ui.theme.JetDoTheme
 import com.roblesdotdev.jetdo.tasksList.domain.model.Task
 
@@ -52,12 +54,14 @@ private fun RowButtons(
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        TextButton(onClick = onRescheduleClick) {
-            Text(text = "Reschedule")
-        }
-        TextButton(onClick = onDoneClick) {
-            Text(text = "Done")
-        }
+        AppTextButton(
+            text = stringResource(R.string.reschedule),
+            onClick = onRescheduleClick
+        )
+        AppTextButton(
+            text = stringResource(R.string.done),
+            onClick = onDoneClick
+        )
     }
 }
 
