@@ -1,4 +1,4 @@
-package com.roblesdotdev.jetdo.tasksList.ui
+package com.roblesdotdev.jetdo.taskList.ui.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.roblesdotdev.jetdo.R
 import com.roblesdotdev.jetdo.core.ui.components.AppTextButton
 import com.roblesdotdev.jetdo.core.ui.theme.JetDoTheme
-import com.roblesdotdev.jetdo.tasksList.domain.model.Task
+import com.roblesdotdev.jetdo.taskList.domain.model.Task
 
 @Composable
 fun TaskListItem(
