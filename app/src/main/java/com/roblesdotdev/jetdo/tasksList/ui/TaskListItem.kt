@@ -21,8 +21,10 @@ import com.roblesdotdev.jetdo.core.ui.theme.JetDoTheme
 import com.roblesdotdev.jetdo.tasksList.domain.model.Task
 
 @Composable
-fun TaskItem(
-    task: Task
+fun TaskListItem(
+    task: Task,
+    onRescheduleClicked: (Task) -> Unit,
+    onDoneClicked: (Task) -> Unit,
 ) {
     Card(
         modifier = Modifier
@@ -34,13 +36,13 @@ fun TaskItem(
                 .fillMaxWidth()
                 .padding(12.dp),
             horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             TaskText(title = task.title)
 
             RowButtons(
-                onRescheduleClick = {},
-                onDoneClick = {}
+                onRescheduleClicked = { onRescheduleClicked(task) },
+                onDoneClicked = { onDoneClicked(task) },
             )
         }
     }
@@ -48,19 +50,19 @@ fun TaskItem(
 
 @Composable
 private fun RowButtons(
-    onRescheduleClick: () -> Unit,
-    onDoneClick: () -> Unit
+    onRescheduleClicked: () -> Unit,
+    onDoneClicked: () -> Unit
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         AppTextButton(
             text = stringResource(R.string.reschedule),
-            onClick = onRescheduleClick
+            onClick = onRescheduleClicked
         )
         AppTextButton(
             text = stringResource(R.string.done),
-            onClick = onDoneClick
+            onClick = onDoneClicked
         )
     }
 }
@@ -88,8 +90,10 @@ private fun TaskText(
 fun TaskItemPreview() {
     JetDoTheme {
         val demoTask = Task(title = "Mi first task item")
-        TaskItem(
-            task = demoTask
+        TaskListItem(
+            task = demoTask,
+            onRescheduleClicked = {},
+            onDoneClicked = {}
         )
     }
 }
